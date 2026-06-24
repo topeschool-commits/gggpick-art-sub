@@ -34,19 +34,27 @@
   </header>
   <div class="single-content">{{ .Content }}</div>
   {{ if eq .Section "posts" }}
+  
+  
+
   <div class="related-posts">
     <h3>🔗 Recommended Picks</h3>
     <ul>
-      {{ $relatedRaw := .Site.RegularPages.Related . }}
-      {{ $related := (where $relatedRaw "Permalink" "!=" .Permalink) | first 5 }}
-      {{ with $related }}
-        {{ range . }}<li><a href="{{ .Permalink }}">{{ replace .Title ":" "-" }}</a></li>{{ end }}
+      {{ $related := (where (where .Site.RegularPages "Params.niche_id" "==" .Params.niche_id) "Permalink" "!=" .Permalink) | first 5 }}
+      {{ if gt (len $related) 0 }}
+        {{ range $related }}<li><a href="{{ .Permalink }}">{{ replace .Title ":" "-" }}</a></li>{{ end }}
       {{ else }}
         {{ $latest := (where (where .Site.RegularPages "Section" "posts") "Permalink" "!=" .Permalink) | first 5 }}
         {{ range $latest }}<li><a href="{{ .Permalink }}">{{ replace .Title ":" "-" }}</a></li>{{ end }}
       {{ end }}
     </ul>
-  </div>
+  </div>  
+  
+  
+  
+
+  
+  
   <div class="legal-disclaimer">
     <h4>⚠️ 제휴 마케팅 안내 및 면책 조항</h4>
     <p><strong>쿠팡 파트너스 프로그램:</strong> {{ .Site.Title }} 는 쿠팡(Coupang.com)으로 연결되는 광고 및 링크를 통해 수수료를 얻을 수 있도록 설계된 쿠팡 파트너스 프로그램의 참여자입니다. </p>
